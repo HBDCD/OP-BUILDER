@@ -33,19 +33,24 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - name: 释放磁盘空间
-      uses: jlumbroso/free-disk-space@main
-      with:
-        tool-cache: false
-        android: true
-        dotnet: true
-        haskell: true
-        large-packages: true
-        docker-images: true
-        swap-storage: true
-
     - name: Checkout
       uses: actions/checkout@main
+
+    - name: 释放磁盘空间
+      run: |
+        sudo rm -rf /etc/apt/sources.list.d
+        sudo swapoff -a
+        sudo rm -f /swapfile /mnt/swapfile
+        sudo docker image prune -a -f
+        sudo systemctl stop docker
+        sudo snap set system refresh.retain=2
+        sudo apt-get -y purge firefox clang* ghc* google* llvm* mono* mongo* mysql* php*
+        sudo apt-get -y autoremove --purge
+        sudo apt-get clean
+        sudo rm -rf /etc/mysql /etc/php /usr/lib/jvm /usr/libexec/docker /usr/local /usr/src/* /var/lib/docker /var/lib/gems /var/lib/mysql /var/lib/snapd /etc/skel /opt/{microsoft,az,hostedtoolcache,cni,mssql-tools,pipx} /usr/share/{az*,dotnet,swift,miniconda,gradle*,java,kotlinc,ri,sbt} /root/{.sbt,.local,.npm}
+        sudo sed -i '/NVM_DIR/d;/skel/d' /root/{.bashrc,.profile}
+        rm -rf ~/{.cargo,.dotnet,.rustup}
+        df -Th
 
     - name: Initialization environment
       env:
