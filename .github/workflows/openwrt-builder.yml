@@ -76,5 +76,7 @@ jobs:
 
     - name: Setup tmate session
       uses: mxschmitt/action-tmate@v3
+    - name: Upload .config file as artifact
+      uses: actions/upload-artifact@v3
+      with:
         name: openwrt-config
-        path: openwrt/.config
