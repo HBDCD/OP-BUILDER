@@ -75,7 +75,7 @@ jobs:
       run: cd openwrt && ./scripts/feeds install -a
 
     - name: Setup tmate session
-      uses: mxschmitt/action-tmate@v3
+      uses: csexton/debugger-action@master
     - name: Upload .config to artifacts
       uses: actions/upload-artifact@v3
       with:
