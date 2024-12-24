@@ -10,7 +10,7 @@
 # See /LICENSE for more information.
 #
 
-name: OpenWrt Builder
+name: 编译固件
 
 on:
   repository_dispatch:
@@ -47,7 +47,7 @@ jobs:
         docker-images: true
         swap-storage: true
 
-    - name: Initialization environment
+    - name: 准备编译环境
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
@@ -61,7 +61,7 @@ jobs:
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
 
-    - name: Clone source code
+    - name: 获取源代码
       working-directory: /workdir
       run: |
         df -hT $PWD
@@ -81,9 +81,6 @@ jobs:
         chmod +x $DIY_P2_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
-
-    - name: Start SSH
-      uses: P3TERX/ssh2actions@main
 
     - name: Download package
       id: package
